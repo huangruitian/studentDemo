@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <p class="dxt-title"></p>
+    <div class="dxt-item">
+    </div>
+    <button class="btn">提交</button>
+    <div class="show"></div>
+    <script>
+        //需求分析：根据JSON数据格式动态渲染数据，用户点击按钮的时候显示答案
+        //        1)数据是个JSON对象，当用户选择的时候checkbox的checked = "checked"，又要唯一区别。
+        //        2)直接用id区别每个数据的，JSON数据格式的问题答案是key和value的形式。
+        //        3)所以直接拿for in 遍历问题答案的对象，key + i做id做到唯一
+        //问卷产品-->网页呈现
+        //        1)要考虑兼容性（渐进增强、优雅降级）
+        //        2)技术选型（用不用框架，用什么框架）
+        //        3)效果测试、优化代码、提升用户体验等都要注意（网页加载快不快）
+        var data = {
+            "title": "其中考试单选题",
+            "questions": [
+                {
+                    "title": "以下哪个同学追随过唐憎？",
+                    "answers": {
+                        "A": "孙悟空",
+                        "B": "佛祖",
+                        "C": "观音",
+                        "D": "金角大王",
+                        "E": "银角大王"
+                    }
+                },
+                {
+                    "title": "谁是小仙女？",
+                    "answers": {
+                        "A": "hh",
+                        "B": "kk",
+                        "C": "kw",
+                        "D": "ww",
+                        "E": "gg"
+                    }
+                }
+            ]
+        }
+        //封装取消冒泡函数。
+        function stopBubble(event) {
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            } else {
+                event.cancelBubble = true;
+            }
+        }
+        //封装取消默认事件函数
+        function cancelHandler(event) {
+            if (event.preventDefault) {
+                event.preventDefault();
+            } else {
+                event.returnValue = false;
+            }
+        }
+        //封装兼容性好的getByClassName函数。
+        Document.prototype.getByClassName = function (className) {
+            //改变this指向，让获取到的类数组有数组的方法。
+            var allDomArr = Array.prototype.slice.call(document.getElementsByTagName('*'), 0);
+            var filterArr = []; //存放想要的类名。
+            function dealClass(dom) { //利用正则表达式处理下类名串。
+                //demo   item       aaa --> demo item aaa
+                var reg = /\s+/g;
+                var arrClassName = dom.className.replace(reg, ' ').trim();
+                return arrClassName; //返回处理好的dom元素的类名的字符串。
+            }
+            allDomArr.forEach(function (ele, index) {
+                var itemClassArr = dealClass(ele).split(' '); //处理好的字符串再打散成数组。
+                for (var i = 0; i < itemClassArr.length; i++) {
+                    if (itemClassArr[i] == className) { //存不存在那个类名。
+                        filterArr.push(ele); //存在直接把元素存起来。
+                        break;
+                    }
+                }
+            })
+            return filterArr; //最后返回筛选好标签数组
+        }
+        //封装绑定事件处理函数
+        function addEvent(elem, type, handle) {
+            if (elem.addEventListener) {//最新的方法
+                elem.addEventListener(type, handle, false);
+            } else if (elem.attachEvent) {//ie独有的
+                elem.attachEvent('on' + type, function () {
+                    handle.call(elem);
+                })
+            } else {//都没有用句柄
+                elem['on' + type] = handle;
+            }
+        }
+        function init(changeType) {
+            var btn = document.getByClassName("btn")[0];
+            var dxt = document.getByClassName("dxt-title")[0];
+            dxt.innerHTML = data.title;
+            if (data.questions.length > 0) {
+                let dxt = document.getByClassName("dxt-item")[0];//ES6-->babel
+                let len = data.questions.length;
+                let str = "";
+                let type = changeType == undefined ? 'radio' : 'checkbox';
+                let alertStr = '用户答案如下:\n';
+
+                for (let i = 0; i < len; i++) {//这里也可以用forEach,也可以用for in
+                    str += `<p class="questions">${i + 1}.${data.questions[i].title}</p>`
+                    for (key in data.questions[i].answers) {
+                        str += `<input type="${type}" id="${key + i}" name="${data.questions[i].title}" value="${key}">
+                   <label for="${key + i}">${data.questions[i].answers[key]}</label><br>`;
+                    }
+                }
+                dxt.innerHTML = str;//也可以用dxt.appendChild()但是这样速度更快。
+                addEvent(btn, 'click', function (e) {
+                    for (let i = 0; i < len; i++) {
+                        alertStr += `第${i + 1}题:`
+                        for (key in data.questions[i].answers) {//ABCDE
+                            //console.log(document.getElementById(key+i).checked);
+                            if (document.getElementById(key + i).checked != true) {
+                                alertStr += ``
+                            } else {
+                                alertStr += `${key}`
+                            }
+                        }
+                        alertStr += `\n`;
+                    }
+                    alert(alertStr);
+                    alertStr = '用户答案如下:\n';
+                });
+            } else {
+                alert("没有题目！");
+            }
+            //取消下默认事件和防止事件冒泡
+            stopBubble(btn);
+            cancelHandler(btn);
+        }
+        init("checkbox");
+    </script>
+</body>
+
+</html>

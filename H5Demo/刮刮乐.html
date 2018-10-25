@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #myCanvas {
+            border: 1px solid black;
+            background-repeat: no-repeat;
+            background-size: 200px 200px;
+            background-position: center;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas width="300" height="300" id="myCanvas"></canvas>
+    <script>
+        
+        var oCanvas = document.getElementById('myCanvas');
+        var ctx = oCanvas.getContext('2d');
+        var w = oCanvas.width;
+        var h = oCanvas.height;
+        var lastX, lastY, nowX, nowY;
+
+        function init() {
+            //填充画布，灰色正方形
+            ctx.fillStyle = '#ccc';
+            ctx.fillRect(0, 0, w, h);
+            //插入随机的背景图片 Math.random()
+            var r = Math.random();
+            var oImg = new Image();
+            r < 0.5 ? oImg.src = './img/1.png' : oImg.src = './img/2.png';
+            oImg.onload = function () {
+                //console.log(oImg);
+                //把照片变成canvas的背景图片。
+                oCanvas.style.backgroundImage = 'url(' + oImg.src + ')';
+                //规定新旧像素合成后最终的展示方式
+                ctx.globalCompositeOperation = 'destination-out';
+                //开始交换
+                //根据鼠标落下和移动画圆，
+                oCanvas.addEventListener('mousedown', downFn, false);
+            }
+        }
+        init();
+
+        function downFn(e) {
+            var lastX = e.clientX - oCanvas.offsetLeft;
+            var lastY = e.clientY - oCanvas.offsetTop;
+            oCanvas.addEventListener('mousemove', moveFn, false);
+            document.addEventListener('mouseup', upFn, false);
+        }
+
+        function moveFn(e) {
+            var nowX = e.clientX - oCanvas.offsetLeft;
+            var nowY = e.clientY - oCanvas.offsetTop;
+            ctx.beginPath();
+            ctx.fillStyle = 'black';
+
+            ctx.lineWidth = 40;
+            //开始画线的位置是鼠标点下的位置，画线
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(nowX, nowY);
+            ctx.stroke();
+            //画圆
+            ctx.arc(nowX, nowY, 20, 0, Math.PI * 2, 0);
+            ctx.closePath();
+            ctx.fill();
+            
+            lastX = nowX;
+            lastY = nowY;
+        }
+
+        function upFn() {
+            //避免一点到另一点连续起来
+            lastX = undefined;
+            lastY = undefined;
+            //鼠标抬起就清除事件
+            oCanvas.removeEventListener('mousemove', moveFn, false);
+            document.removeEventListener('mouseup', upFn, false);
+        }
+    </script>
+</body>
+
+</html>

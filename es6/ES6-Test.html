@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <Script>
+        // 1.ES的全称是什么？
+        //      ECMAScript
+        // 2.ES6之前的作用域有哪些？
+        // 函数作用域，全部作用域
+        // 3.ES6引入的作用域？
+        // let 和 const 识别块级作用域(块级作用域)
+        // 4.说说var和let声明的区别？
+           // 1) var 存在变量声明提升，let不存在变量声明提升。
+           // 2) 因为存在变量声明提升，一般var只能识别函数作用域。（除了这种特殊情况 try catch (x) ）, let 能够识别块级作用域
+           // 3) let 有一个TDZ的概念，其实就是严格遵守先定义，后使用的原则。不允许重复声明，解决原来变量冲突和重复声明的毛病（像C语言）
+        // 5.Set与 Map数据结构的区别，底层实现原理是什么？
+           // 用临接链表，每个链表node节点表示。利用hash算法分桶，然后每个桶是个链表的结构
+        //    Set产生一个类似数组的结构，里面值唯一。｛key:1,next:null｝ [...new Set(arr)]
+        //    Map用来做数据字典的，只要知道key就可以找值｛key:1,value:1,next:null｝
+        //    先有Set，后有Map。
+            //做一个链表
+            // class Node{
+            //     constructor(n){
+            //         this.key = n;
+            //         this.next = null;
+            //     }
+            // }
+            // let nodeHeader = {type:"header",next:null};
+            // installBefor(nodeHeader,new Node(1));
+            // installBefor(nodeHeader,new Node(2));
+            // installBefor(nodeHeader,new Node(3));
+            // installBefor(nodeHeader,new Node(4),1);
+            // function installBefor(startNode,node,num = Infinity){
+            //     if(num < 1){//插入头前面不行
+            //         throw new Error("不能插链表的头部");
+            //     }
+            //     while(startNode.next && --num > 0){//控制插入第几个的前面
+            //         startNode = startNode.next;
+            //     }
+            //     let nextNode = startNode.next;//先保留原来的
+            //     startNode.next = node;
+            //     node.next = nextNode;
+            // }
+        // 6.如何判断链表里面有环？（18年小米面试题）
+        // 用两个指针，一个指针走一步，一个走两步。指针重合（相等且不等于空）
+        //    function findRing(nodeHeader){
+        //        let point1 = nodeHeader.next;
+        //        let point2 = point1 && point1.next;//安全性处理
+        //        while(point1 && point2){//都存在，且不为空
+        //                return true;
+        //            if(point1 == point2){
+        //            }
+        //            point1 = point1.next;
+        //            point2 = point2.next;
+        //            point2 = point2 && point2.next;//安全性处理
+        //        }
+        //        return false;
+        //    }
+        // 7.判断下面 this是指向是谁，想想为什么
+        //    letshow = () => {
+        //        console.log(this)//当函数声明的时候已经绑定了。this == window
+        //    }
+        //    letobj = { show }
+        //    obj.show()//window
+        //    obj.otherShow = show.bind(obj)// 箭头函数的this和bind一样 只能绑定一次
+        //    obj.otherShow()//window
+        //    let newObj = new obj.otherShow()//报错，箭头函数不能当构造函数用
+        // 8. 原生方式的继承怎么写？（2018年美团面试题）
+        //    1)传统的原型链继承 obj.prototype.name = xxx (继承过多的无用属性)
+        //    2)共享原型的方式继承 obj1.prototype = obj.prototype (你改我也改，改变一个原型，另一个也变)
+        //    3)借用构造函数继承，在自己的构造函数多跑一个或者多个构造函数。call/apply。(多走了一个函数)
+        //    4)圣杯模式、Object.create() 
+        //     //
+        // Father.prototype.father = "father"
+        // function Father() {
+        // }
+        // function Son() {
+        // }
+        // //Son.prototype = Object.create(Father.prototype)//注意这种原型方式
+        // function F() {}
+        // F.prototype = Father.prototype
+        // Son.prototype = new F();//new的方式改变自己的原型
+        // obj = new Son()
+        // 
+        // 9. ES6中的 class关键字声明的类具有什么特性 ？
+        //  1)也存在TDZ暂时性死区，严格遵循先定义后使用。
+        //  2)可以定义静态方法，相当于构造函数的方法。
+        //  3)语义化更好，不存在声明提升
+        // 10. 判断字符串中时候包含哪个字符用什么方法？ES中引入了 includes，利用原生语法实现字符串的 includes的功能
+        //  indexof
+        // 11. 如果想让 arguments，NodeLists以及 likeArray这样的类数组，如何使用数组的方法，有几种？
+        //     Array.prototype.slice.call(arguments, xx)
+        //     ([...arguments]).slice
+        //     Array.from()
+        // 12. 阐述结构赋值的好处
+        // 13. 通过结构赋值取出下面对象中的特定的值
+        // letmovieList = {
+        //     start: 0,
+        //     count: 1,
+        //     subjects: [
+        //         {
+        //             rating: {
+        //                 max: 10,
+        //                 min: 0,
+        //                 average: 9.6,
+        //             },
+        //             genres: ['剧情', '喜剧'],
+        //             casts: 1,
+        //             title: '我不是药神',
+        //         }
+        //     ]
+        // }
+        // // 取出里面的 subjects,rating,average,剧情，喜剧，结构出来
+        // let {subjects,rating,average,jq,xj} = {subjects,{rating}};
+
+
+    </Script>
+</body>
+
+</html>

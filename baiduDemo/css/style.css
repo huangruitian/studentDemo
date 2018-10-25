@@ -1,0 +1,165 @@
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+/* header style */
+/* .header{
+    overflow: hidden;
+} */
+.header::after{
+    content: "";
+    clear: both;
+    display: block;
+}
+.header ul{
+    list-style:none;
+}
+.header .nav-top{
+    /* border: 1px solid red; */
+    margin-right:10px;
+    height: 64px;
+    line-height: 64px;  
+}
+.header ul li{
+    float: right;
+    text-align: center;
+    margin-left:20px; 
+}
+.header ul li a{
+    font-size: 13px;
+    font-weight: 600;
+    color: #333
+}
+.header .nav-top .no-bold a{
+    font-weight: normal;
+}
+.header .nav-top .more a{
+    background-color: #38f;
+    color:white;
+    padding: 4px 4px;
+    font-weight: normal;
+    text-decoration:none;
+}
+.header .nav-top .more a:hover{
+    color: #999;
+    background-color:#fff;
+}
+
+/* search style */
+.search{
+    text-align: center;
+    /* border: 1px solid red; */
+}
+.search .logo{
+    /* border:1px solid red */
+}
+.search .logo img{
+    width: 280px;
+}
+.search .keyWork{
+  margin-top:20px; 
+}
+.search .keyWork form{
+    position: relative; 
+  }
+.search .keyWork form .inpWarpper{
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+}
+.search .keyWork form .btnWarpper{
+    display: inline-block;
+    vertical-align: top;
+}
+.search .keyWork form .inpWarpper input{
+    width:539px;
+    height:34px;
+    border: 1px solid #b6b6b6;
+    text-indent: 1em;
+}
+.search .keyWork form .btnWarpper input{
+    height:36px;
+    line-height: 36px;
+    width: 100px;
+    margin-left: -5px;
+    -webkit-margin-left: -10px;
+    background-color: #3385ff;
+    border: none;
+    color:white;
+    font-size: 15px;
+    
+}
+.search .keyWork form .btnWarpper input:hover{
+    background-color: #2d78f4;
+    cursor: pointer;
+}
+.search .keyWork form .inpWarpper .camear{
+    position: absolute;
+    width: 26px;
+    height: 23px;
+    background-image: url('../images/slog.png');
+    top:50%;
+    margin-top:-12px;
+    right: 10px; 
+}
+.search .keyWork form .inpWarpper .camear:hover{
+    cursor: pointer;
+    background-image: url('../images/slog1.png');   
+}
+.search .keyWork form .list-data{
+    position: absolute;
+    left: 50%;
+    width: 638px;
+    margin-left:-320px; 
+    border: 1px solid #ccc;
+    display: none;
+}
+.search .keyWork form .list-data li{
+    text-align: left;
+    text-indent: 1em;
+}
+.search .keyWork form .list-data li a{
+   text-decoration: none;
+   color:#2d78f4;
+}
+/* info style */
+.info{
+    text-align: center;
+    margin-top:200px; 
+}
+.info .weixin p{
+    color: #666;
+    font-size: 13px;
+    font-weight: 700;
+}
+.info .message{
+    margin-top:20px; 
+}
+.info .message .lineOne a{
+    color: #999;
+    font-size: 12px;
+    margin-left:20px; 
+}
+.info .message .lineTwo a,span{
+    color: #999;
+    font-size: 12px;
+}
+.info .message .lineTwo{
+    margin-top: 5px;
+}
+.info .message .lineTwo .icon{ 
+    display:inline-block;
+    background-color:black;
+    width:20px;
+    height:20px;
+    background-image: url('../images/icon.png');
+    vertical-align: -5px;
+}
+.info .message .lineTwo .icon2{
+    display:inline-block;
+    background-color:black;
+    width:18px;
+    height:18px;
+    background-image: url('../images/icon2.png');
+}
